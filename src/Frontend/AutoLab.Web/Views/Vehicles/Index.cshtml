@@ -1,0 +1,118 @@
+@{
+    ViewData["Title"] = "Vehículos";
+}
+
+<div class="container">
+    <h2>Listado de Vehículos</h2>
+    <div class="row mb-3">
+        <div class="col-md-12">
+            <a href="@Url.Action("Create")" class="btn btn-primary">Nuevo Vehículo</a>
+        </div>
+    </div>
+
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Filtros</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 mb-3">
+                    <label>País</label>
+                    <select id="countryFilter" class="form-control select2"></select>
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label>Marca</label>
+                    <input type="text" id="brandFilter" class="form-control">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label>Modelo</label>
+                    <input type="text" id="modelFilter" class="form-control">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label>Año</label>
+                    <input type="number" id="yearFilter" class="form-control">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label>Patente</label>
+                    <input type="text" id="licensePlateFilter" class="form-control">
+                </div>
+                <div class="col-md-4 mb-3">
+                    <label>Código VIN</label>
+                    <input type="text" id="vinCodeFilter" class="form-control">
+                </div>
+            </div>
+            <button id="applyFilters" class="btn btn-primary">Aplicar Filtros</button>
+            <button id="clearFilters" class="btn btn-secondary">Limpiar Filtros</button>
+        </div>
+    </div>
+
+    <div class="table-responsive">
+        <table id="vehiclesTable" class="table table-striped">
+            <thead>
+                <tr>
+                    <th>País</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Año</th>
+                    <th>Patente</th>
+                    <th>Código VIN</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/vehicles.js"></script>
+    <script>
+        $(document).ready(function () {
+            var table = $('#vehiclesTable').DataTable({
+                serverSide: true,
+                processing: true,
+                ajax: {
+                    url: '@Url.Action("GetVehicles")',
+                    type: 'GET',
+                    data: function(d) {
+                        return {
+                            ...d,
+                            country: $('#countryFilter').val(),
+                            brand: $('#brandFilter').val(),
+                            model: $('#modelFilter').val(),
+                            year: $('#yearFilter').val(),
+                            licensePlate: $('#licensePlateFilter').val(),
+                            vinCode: $('#vinCodeFilter').val()
+                        };
+                    }
+                },
+                columns: [
+                    { data: 'country' },
+                    { data: 'brand' },
+                    { data: 'model' },
+                    { data: 'year' },
+                    { data: 'licensePlate' },
+                    { data: 'vinCode' },
+                    {
+                        data: 'id',
+                        render: function (data) {
+                            return `
+                                <a href="/Vehicles/Edit/${data}" class="btn btn-sm btn-warning">Editar</a>
+                                <button onclick="deleteVehicle(${data})" class="btn btn-sm btn-danger">Eliminar</button>
+                            `;
+                        }
+                    }
+                ]
+            });
+
+            $('#applyFilters').click(function() {
+                table.ajax.reload();
+            });
+
+            $('#clearFilters').click(function() {
+                $('input, select').val('');
+                $('.select2').val(null).trigger('change');
+                table.ajax.reload();
+            });
+        });
+    </script>
+} 

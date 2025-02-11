@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178 d17.12
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoLab.API", "src\Backend\AutoLab.API\AutoLab.API.csproj", "{A6B72C75-B357-49EA-BC4B-EE92A7E3B073}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{23434053-06ED-4A59-879E-34D14E868115}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "docs", "docs", "{2AC0BEDC-C0F6-46C0-A90A-95041AFCDAFB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scripts", "scripts", "{2D74A057-33DF-4E37-8EA8-5F3D4CB1CE6E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{D41200FD-431A-4848-BFFE-C8421EFCB3CB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{4B87C672-5A78-437C-9402-A08689A8E9E1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoLab.Web", "src\Frontend\AutoLab.Web\AutoLab.Web.csproj", "{F7F0F55F-9E75-4A40-8208-7B06D1365AF2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoLab.Domain", "src\Backend\AutoLab.Domain\AutoLab.Domain.csproj", "{AA8DD38F-79D6-425F-A995-3741A0E485E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoLab.Application", "src\Backend\AutoLab.Application\AutoLab.Application.csproj", "{37D5A173-AC6B-4614-9794-38E9C7415C42}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AutoLab.Infrastructure", "src\Backend\AutoLab.Infrastructure\AutoLab.Infrastructure.csproj", "{69D832D3-D7CA-499C-AA0B-BC57C6049CD5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A6B72C75-B357-49EA-BC4B-EE92A7E3B073}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6B72C75-B357-49EA-BC4B-EE92A7E3B073}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6B72C75-B357-49EA-BC4B-EE92A7E3B073}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6B72C75-B357-49EA-BC4B-EE92A7E3B073}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F7F0F55F-9E75-4A40-8208-7B06D1365AF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F7F0F55F-9E75-4A40-8208-7B06D1365AF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F7F0F55F-9E75-4A40-8208-7B06D1365AF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F7F0F55F-9E75-4A40-8208-7B06D1365AF2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA8DD38F-79D6-425F-A995-3741A0E485E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA8DD38F-79D6-425F-A995-3741A0E485E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA8DD38F-79D6-425F-A995-3741A0E485E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA8DD38F-79D6-425F-A995-3741A0E485E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37D5A173-AC6B-4614-9794-38E9C7415C42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37D5A173-AC6B-4614-9794-38E9C7415C42}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37D5A173-AC6B-4614-9794-38E9C7415C42}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37D5A173-AC6B-4614-9794-38E9C7415C42}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69D832D3-D7CA-499C-AA0B-BC57C6049CD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69D832D3-D7CA-499C-AA0B-BC57C6049CD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69D832D3-D7CA-499C-AA0B-BC57C6049CD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69D832D3-D7CA-499C-AA0B-BC57C6049CD5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{A6B72C75-B357-49EA-BC4B-EE92A7E3B073} = {D41200FD-431A-4848-BFFE-C8421EFCB3CB}
+		{D41200FD-431A-4848-BFFE-C8421EFCB3CB} = {23434053-06ED-4A59-879E-34D14E868115}
+		{4B87C672-5A78-437C-9402-A08689A8E9E1} = {23434053-06ED-4A59-879E-34D14E868115}
+		{F7F0F55F-9E75-4A40-8208-7B06D1365AF2} = {4B87C672-5A78-437C-9402-A08689A8E9E1}
+		{AA8DD38F-79D6-425F-A995-3741A0E485E2} = {D41200FD-431A-4848-BFFE-C8421EFCB3CB}
+		{37D5A173-AC6B-4614-9794-38E9C7415C42} = {D41200FD-431A-4848-BFFE-C8421EFCB3CB}
+		{69D832D3-D7CA-499C-AA0B-BC57C6049CD5} = {D41200FD-431A-4848-BFFE-C8421EFCB3CB}
+	EndGlobalSection
+EndGlobal
