@@ -1,5 +1,6 @@
 using AutoLab.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace AutoLab.Infrastructure.Persistence
 {
@@ -14,7 +15,8 @@ namespace AutoLab.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(AutoLabDbContext).Assembly);
+            // Esto aplicará automáticamente todas las configuraciones en el assembly
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 } 
