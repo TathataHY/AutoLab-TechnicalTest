@@ -1,3 +1,4 @@
+using AutoLab.Domain.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace Frontend.Web.Controllers
             if (!string.IsNullOrEmpty(search))
             {
                 countries = countries.Where(c => 
-                    c.Name.Contains(search, StringComparison.OrdinalIgnoreCase));
+                    c.Contains(search, StringComparison.OrdinalIgnoreCase));
             }
 
             return Json(countries);

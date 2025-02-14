@@ -1,5 +1,14 @@
+@model IEnumerable<AutoLab.Web.Models.VehicleViewModel>
+@using System.Linq
 @{
     ViewData["Title"] = "Vehículos";
+}
+
+@if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+{
+    <div class="alert alert-danger">
+        @ViewBag.ErrorMessage
+    </div>
 }
 
 <div class="container">
@@ -15,52 +24,114 @@
             <h5>Filtros</h5>
         </div>
         <div class="card-body">
-            <div class="row">
-                <div class="col-md-4 mb-3">
-                    <label>País</label>
-                    <select id="countryFilter" class="form-control select2"></select>
+            <form asp-action="Index" method="get" id="filterForm">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="Country">País</label>
+                        <select name="Country" class="form-control select2" asp-items="@(new SelectList(ViewBag.Countries))">
+                            <option value="">Todos</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="Brand">Marca</label>
+                        <input type="text" name="Brand" class="form-control">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="Model">Modelo</label>
+                        <input type="text" name="Model" class="form-control">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="Year">Año</label>
+                        <input type="number" name="Year" class="form-control">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="LicensePlate">Patente</label>
+                        <input type="text" name="LicensePlate" class="form-control">
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <label for="VinCode">Código VIN</label>
+                        <input type="text" name="VinCode" class="form-control">
+                    </div>
                 </div>
-                <div class="col-md-4 mb-3">
-                    <label>Marca</label>
-                    <input type="text" id="brandFilter" class="form-control">
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label>Modelo</label>
-                    <input type="text" id="modelFilter" class="form-control">
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label>Año</label>
-                    <input type="number" id="yearFilter" class="form-control">
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label>Patente</label>
-                    <input type="text" id="licensePlateFilter" class="form-control">
-                </div>
-                <div class="col-md-4 mb-3">
-                    <label>Código VIN</label>
-                    <input type="text" id="vinCodeFilter" class="form-control">
-                </div>
-            </div>
-            <button id="applyFilters" class="btn btn-primary">Aplicar Filtros</button>
-            <button id="clearFilters" class="btn btn-secondary">Limpiar Filtros</button>
+                <button type="submit" class="btn btn-primary">Buscar</button>
+                <a href="@Url.Action("Index")" class="btn btn-secondary">Limpiar</a>
+            </form>
         </div>
     </div>
 
-    <div class="table-responsive">
-        <table id="vehiclesTable" class="table table-striped">
-            <thead>
-                <tr>
-                    <th>País</th>
-                    <th>Marca</th>
-                    <th>Modelo</th>
-                    <th>Año</th>
-                    <th>Patente</th>
-                    <th>Código VIN</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-        </table>
-    </div>
+    @if (Model != null && Model.Any())
+    {
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>País</th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Año</th>
+                        <th>Patente</th>
+                        <th>Código VIN</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>@item.Country</td>
+                            <td>@item.Brand</td>
+                            <td>@item.Model</td>
+                            <td>@item.Year</td>
+                            <td>@item.LicensePlate</td>
+                            <td>@item.VinCode</td>
+                            <td>
+                                <a href="@Url.Action("Edit", new { id = item.Id })" class="btn btn-sm btn-primary">Editar</a>
+                                <button class="btn btn-sm btn-danger delete-btn" data-id="@item.Id">Eliminar</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        
+        <nav aria-label="Paginación">
+            <ul class="pagination justify-content-center">
+                @{
+                    var prevDisabled = ViewBag.CurrentPage <= 1 ? "disabled" : "";
+                    var nextDisabled = ViewBag.CurrentPage >= ViewBag.TotalPages ? "disabled" : "";
+                    var currentPage = ViewBag.CurrentPage;
+                    var totalPages = ViewBag.TotalPages;
+                }
+                
+                <li class="page-item @prevDisabled">
+                    <a class="page-link" href="@Url.Action("Index", new { page = currentPage - 1, pageSize = ViewBag.PageSize })" tabindex="-1">Anterior</a>
+                </li>
+                
+                @for (int i = Math.Max(1, currentPage - 2); i <= Math.Min(totalPages, currentPage + 2); i++)
+                {
+                    <li class="page-item @(i == currentPage ? "active" : "")">
+                        <a class="page-link" href="@Url.Action("Index", new { page = i, pageSize = ViewBag.PageSize })">@i</a>
+                    </li>
+                }
+                
+                <li class="page-item @nextDisabled">
+                    <a class="page-link" href="@Url.Action("Index", new { page = currentPage + 1, pageSize = ViewBag.PageSize })">Siguiente</a>
+                </li>
+            </ul>
+        </nav>
+        
+        <div class="text-center mt-2">
+            <small class="text-muted">
+                Mostrando página @currentPage de @totalPages (Total: @ViewBag.TotalItems registros)
+            </small>
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            No se encontraron vehículos que coincidan con los criterios de búsqueda.
+        </div>
+    }
 </div>
 
 @section Scripts {
@@ -68,22 +139,19 @@
     <script>
         $(document).ready(function () {
             var table = $('#vehiclesTable').DataTable({
-                serverSide: true,
                 processing: true,
+                serverSide: true,
                 ajax: {
-                    url: '@Url.Action("GetVehicles")',
-                    type: 'GET',
-                    data: function(d) {
-                        return {
-                            ...d,
-                            country: $('#countryFilter').val(),
-                            brand: $('#brandFilter').val(),
-                            model: $('#modelFilter').val(),
-                            year: $('#yearFilter').val(),
-                            licensePlate: $('#licensePlateFilter').val(),
-                            vinCode: $('#vinCodeFilter').val()
-                        };
-                    }
+                    url: function() {
+                        return '/Vehicles/GetVehicles?' + 
+                               'country=' + encodeURIComponent($('#countryFilter').val()) +
+                               '&brand=' + encodeURIComponent($('#brandFilter').val()) +
+                               '&model=' + encodeURIComponent($('#modelFilter').val()) +
+                               '&year=' + encodeURIComponent($('#yearFilter').val()) +
+                               '&licensePlate=' + encodeURIComponent($('#licensePlateFilter').val()) +
+                               '&vinCode=' + encodeURIComponent($('#vinCodeFilter').val());
+                    },
+                    type: 'GET'
                 },
                 columns: [
                     { data: 'country' },
@@ -96,23 +164,86 @@
                         data: 'id',
                         render: function (data) {
                             return `
-                                <a href="/Vehicles/Edit/${data}" class="btn btn-sm btn-warning">Editar</a>
-                                <button onclick="deleteVehicle(${data})" class="btn btn-sm btn-danger">Eliminar</button>
+                                <a href="/Vehicles/Edit/${data}" class="btn btn-sm btn-primary">Editar</a>
+                                <button class="btn btn-sm btn-danger delete-btn" data-id="${data}">Eliminar</button>
                             `;
                         }
                     }
-                ]
+                ],
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
+                }
             });
 
-            $('#applyFilters').click(function() {
+            // Mejorar el manejo de eventos de filtrado
+            $('#applyFilters').click(function(e) {
+                e.preventDefault();
+                console.log('Aplicando filtros...');
+                
+                // Verificar y mostrar valores antes de recargar
+                console.group('Valores de filtros antes de aplicar');
+                console.log('País:', $('#countryFilter').val());
+                console.log('Marca:', $('#brandFilter').val());
+                console.log('Modelo:', $('#modelFilter').val());
+                console.log('Año:', $('#yearFilter').val());
+                console.log('Patente:', $('#licensePlateFilter').val());
+                console.log('VIN:', $('#vinCodeFilter').val());
+                console.groupEnd();
+                
                 table.ajax.reload();
             });
 
+            // Mejorar la limpieza de filtros
             $('#clearFilters').click(function() {
-                $('input, select').val('');
-                $('.select2').val(null).trigger('change');
+                // Limpiar todos los campos
+                $('input').val('');
+                $('#countryFilter').val('').trigger('change');
+                
+                console.log('Filtros limpiados');
                 table.ajax.reload();
             });
+
+            $('.select2').select2({
+                placeholder: "Seleccione un país",
+                allowClear: true
+            });
+
+            // Manejar el clic en los botones de eliminar
+            $('.delete-btn').click(function () {
+                var id = $(this).data('id');
+                if (confirm('¿Está seguro que desea eliminar este vehículo?')) {
+                    $.ajax({
+                        url: '/Vehicles/Delete/' + id,
+                        type: 'POST',
+                        success: function (result) {
+                            window.location.reload();
+                        },
+                        error: function (error) {
+                            alert('Error al eliminar el vehículo');
+                        }
+                    });
+                }
+            });
+
+            // Mantener los valores de los filtros después de la paginación
+            function getUrlParameter(name) {
+                var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+                if (results == null) return null;
+                return decodeURIComponent(results[1]) || null;
+            }
+
+            // Rellenar los filtros con los valores de la URL
+            $('input[name="Brand"]').val(getUrlParameter('brand'));
+            $('input[name="Model"]').val(getUrlParameter('model'));
+            $('input[name="Year"]').val(getUrlParameter('year'));
+            $('input[name="LicensePlate"]').val(getUrlParameter('licensePlate'));
+            $('input[name="VinCode"]').val(getUrlParameter('vinCode'));
+            
+            // Para el select de país
+            var country = getUrlParameter('country');
+            if (country) {
+                $('select[name="Country"]').val(country);
+            }
         });
     </script>
 } 

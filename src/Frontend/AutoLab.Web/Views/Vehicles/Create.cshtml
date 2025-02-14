@@ -1,15 +1,33 @@
-@model VehicleViewModel
+@model AutoLab.Web.Models.VehicleViewModel
+@using AutoLab.Web.Models
 
-<div class="container">
-    <h2>Crear Nuevo Vehículo</h2>
+<div class="container mt-4">
+    <h2>Nuevo Vehículo</h2>
 
-    <form asp-action="Create" method="post" id="createVehicleForm">
+    <!-- Agregar sección de alertas -->
+    <div id="alertMessages">
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div id="errorMessages">@TempData["ErrorMessage"]</div>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        }
+    </div>
+
+    <form id="createVehicleForm" asp-controller="Vehicles" 
+          asp-action="Create" 
+          method="post" 
+          enctype="application/x-www-form-urlencoded">
         <div class="row">
             <div class="col-md-6">
                 <div class="form-group mb-3">
                     <label asp-for="Country">País</label>
-                    <select asp-for="Country" class="form-control select2" required>
-                        <option value="">Seleccione un país</option>
+                    <select asp-for="Country" name="Country" class="form-control select2">
+                        @foreach (var country in ViewBag.Countries)
+                        {
+                            <option value="@country">@country</option>
+                        }
                     </select>
                     <span asp-validation-for="Country" class="text-danger"></span>
                 </div>
@@ -36,8 +54,14 @@
 
                 <div class="form-group mb-3">
                     <label asp-for="LicensePlate">Patente</label>
-                    <input asp-for="LicensePlate" class="form-control" minlength="6" maxlength="8" required />
-                    <span asp-validation-for="LicensePlate" class="text-danger"></span>
+                    <input asp-for="LicensePlate" 
+                           class="form-control" 
+                           data-val="true"
+                           data-val-required="La patente es requerida"
+                           data-val-licensePlate="La patente debe contener solo letras y números (6-8 caracteres)"
+                           maxlength="8" />
+                    <span asp-validation-for="LicensePlate" class="text-danger field-validation-valid"></span>
+                    <small class="form-text text-muted">Formato válido: ABC123DE</small>
                 </div>
 
                 <div class="form-group mb-3">
@@ -56,34 +80,21 @@
 </div>
 
 @section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/js/vehicle-validation.js"></script>
     <script>
         $(document).ready(function() {
-            $('.select2').select2({
-                ajax: {
-                    url: '@Url.Action("GetCountries", "Api")',
-                    dataType: 'json',
-                    delay: 250,
-                    data: function(params) {
-                        return {
-                            search: params.term
-                        };
-                    },
-                    processResults: function(data) {
-                        return {
-                            results: data.map(function(item) {
-                                return {
-                                    id: item.name,
-                                    text: item.name
-                                };
-                            })
-                        };
-                    }
-                },
-                minimumInputLength: 2,
-                placeholder: 'Seleccione un país'
+            $('.select2').select2();
+            
+            // Agregar esto para debug
+            $('#createVehicleForm').on('submit', function(e) {
+                var formData = $(this).serializeArray();
+                console.log('Form data array:', formData);
+                formData.forEach(function(item) {
+                    console.log(item.name + ': ' + item.value);
+                });
             });
         });
     </script>

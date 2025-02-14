@@ -15,6 +15,7 @@ namespace AutoLab.Web.Controllers
 
         public IActionResult Index()
         {
+            ViewData["Title"] = "Sistema de Gestión de Vehículos - AutoLab";
             return View();
         }
 

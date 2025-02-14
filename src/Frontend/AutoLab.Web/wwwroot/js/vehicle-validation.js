@@ -1,49 +1,48 @@
 $(document).ready(function() {
-    $.validator.addMethod("vinCode", function(value, element) {
-        return this.optional(element) || (value.length >= 14 && value.length <= 17);
-    }, "El código VIN debe tener entre 14 y 17 caracteres");
+    $("#vehicleForm").validate({
+        errorElement: "span",
+        errorClass: "field-validation-error",
+        errorPlacement: function(error, element) {
+            error.attr("data-valmsg-for", element.attr("name"));
+            error.insertAfter(element);
+        },
+        highlight: function(element) {
+            $(element).addClass("input-validation-error");
+        },
+        unhighlight: function(element) {
+            $(element).removeClass("input-validation-error");
+        }
+    });
 
-    $.validator.addMethod("licensePlate", function(value, element) {
-        return this.optional(element) || (value.length >= 6 && value.length <= 8);
-    }, "La patente debe tener entre 6 y 8 caracteres");
+    // Función para mostrar errores
+    window.showErrors = function(errors) {
+        const errorDiv = $('#errorMessages');
+        errorDiv.empty();
+        
+        if (typeof errors === 'string') {
+            errorDiv.append(`<p class="mb-0">${errors}</p>`);
+        } else if (Array.isArray(errors)) {
+            const ul = $('<ul class="mb-0"></ul>');
+            errors.forEach(error => ul.append(`<li>${error}</li>`));
+            errorDiv.append(ul);
+        }
+        
+        $('#errorAlert').removeClass('d-none').addClass('show');
+    };
 
-    $.validator.addMethod("maxCurrentYear", function(value, element) {
-        return this.optional(element) || value <= new Date().getFullYear();
-    }, "El año no puede ser mayor al actual");
+    $.validator.addMethod(
+        "maxYear",
+        function(value, element) {
+            return this.optional(element) || value <= new Date().getFullYear();
+        },
+        "El año no puede ser mayor al año actual"
+    );
 
     $("form").validate({
         rules: {
-            Country: "required",
-            Brand: "required",
-            Model: "required",
             Year: {
-                required: true,
-                number: true,
-                min: 1900,
-                maxCurrentYear: true
-            },
-            LicensePlate: {
-                required: true,
-                licensePlate: true
-            },
-            VinCode: {
-                required: true,
-                vinCode: true
+                maxYear: true
             }
-        },
-        messages: {
-            Country: "Por favor seleccione un país",
-            Brand: "Por favor ingrese la marca",
-            Model: "Por favor ingrese el modelo",
-            Year: {
-                required: "Por favor ingrese el año",
-                number: "Por favor ingrese un año válido",
-                min: "El año debe ser mayor a 1900"
-            },
-            LicensePlate: "Por favor ingrese una patente válida",
-            VinCode: "Por favor ingrese un código VIN válido"
-        },
-        errorElement: "span",
-        errorClass: "text-danger"
+        }
     });
 }); 

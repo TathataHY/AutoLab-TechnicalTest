@@ -1,8 +1,30 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Inicio";
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">AutoLab</h1>
+    <p class="lead">Sistema de Gestión de Vehículos a Nivel Mundial</p>
+    
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Gestión de Vehículos</h5>
+                    <p class="card-text">Acceda al módulo de gestión de vehículos para registrar, modificar, eliminar y listar información de vehículos.</p>
+                    <a href="@Url.Action("Index", "Vehicles")" class="btn btn-primary">
+                        <i class="fas fa-car"></i> Ir a Gestión de Vehículos
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <p>
+            Sistema desarrollado para el registro y análisis de datos de vehículos 
+            a nivel mundial, permitiendo un seguimiento detallado de marcas, 
+            modelos y características específicas.
+        </p>
+    </div>
 </div>
