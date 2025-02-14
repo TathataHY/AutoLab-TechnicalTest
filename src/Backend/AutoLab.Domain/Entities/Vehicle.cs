@@ -4,7 +4,7 @@ namespace AutoLab.Domain.Entities
 {
     public class Vehicle
     {
-        public int Id { get; private set; }
+        public int Id { get; set; }
         public string Country { get; private set; }
         public string Brand { get; private set; }
         public string Model { get; private set; }
@@ -41,10 +41,21 @@ namespace AutoLab.Domain.Entities
 
         private void ValidateLicensePlate(string licensePlate)
         {
-            if (string.IsNullOrEmpty(licensePlate))
-                throw new DomainException("La patente es obligatoria");
+            if (string.IsNullOrWhiteSpace(licensePlate))
+            {
+                throw new DomainException("La patente no puede estar vacía");
+            }
+
             if (licensePlate.Length < 6 || licensePlate.Length > 8)
+            {
                 throw new DomainException("La patente debe tener entre 6 y 8 caracteres");
+            }
+
+            // Nueva validación con regex para solo permitir letras y números
+            if (!System.Text.RegularExpressions.Regex.IsMatch(licensePlate, "^[A-Za-z0-9]+$"))
+            {
+                throw new DomainException("La patente solo puede contener letras y números");
+            }
         }
 
         private void ValidateVinCode(string vinCode)
