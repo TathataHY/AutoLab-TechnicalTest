@@ -7,8 +7,8 @@ namespace AutoLab.Application.Interfaces
         Task<VehicleDto> CreateVehicleAsync(CreateVehicleDto dto);
         Task<VehicleDto> GetByIdAsync(int id);
         Task<(IEnumerable<VehicleDto> Items, int Total)> GetAllAsync(
-            int page, 
-            int pageSize,
+            int page = 1,
+            int pageSize = 10,
             string country = null,
             string brand = null,
             string model = null,
@@ -17,5 +17,6 @@ namespace AutoLab.Application.Interfaces
             string vinCode = null);
         Task UpdateAsync(int id, CreateVehicleDto dto);
         Task DeleteAsync(int id);
+        Task<IEnumerable<VehicleDto>> SearchAsync(string term, string type);
     }
 } 

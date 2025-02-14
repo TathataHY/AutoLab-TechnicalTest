@@ -12,6 +12,10 @@ namespace AutoLab.Application.DTOs
         public string LicensePlate { get; set; }
         public string VinCode { get; set; }
 
+        public VehicleDto()
+        {
+        }
+
         public VehicleDto(Vehicle vehicle)
         {
             Id = vehicle.Id;
